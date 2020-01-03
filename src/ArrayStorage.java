@@ -3,27 +3,34 @@
  */
 public class ArrayStorage {
     private Resume[] storage = new Resume[10000];
-    private int size=0;
+    private int size = 0;
+
     void clear() {
-        for(int i=0; i<size; i++)
-        {
-            storage[i]=null;
+        for (int i = 0; i < size; i++) {
+            storage[i] = null;
         }
-        size=0;
+        size = 0;
     }
 
     void save(Resume r) {
-        if(r.uuid!=null) {
-            storage[size] = r;
-            size++;
+        if (r.uuid != null) {
+            boolean flag = false;
+            for (int i = 0; i < size; i++) {
+                if (storage[i].uuid.equals(r.uuid)) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                storage[size] = r;
+                size++;
+            }
         }
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < size; i++)
-        {
-            if(storage[i].uuid.equals(uuid))
-            {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
                 return storage[i];
             }
         }
@@ -31,15 +38,12 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        for (int i = 0; i < size; i++)
-        {
-            if(storage[i].uuid.equals(uuid))
-            {
-                if(i!=size-1) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                if (i != size - 1) {
                     storage[i] = storage[size - 1];
-                    storage[size-1]=null;
-                }
-                else  storage[i]=null;
+                    storage[size - 1] = null;
+                } else storage[i] = null;
                 size--;
                 break;
             }
@@ -52,7 +56,7 @@ public class ArrayStorage {
     Resume[] getAll() {
         Resume[] fullStorage = new Resume[size];
         System.arraycopy(storage, 0, fullStorage, 0, size);
-        return fullStorage                                                                                                                  ;
+        return fullStorage;
     }
 
     int size() {
