@@ -33,7 +33,6 @@ public class ArrayStorage {
         } else System.out.println("\nBase is full");
     }
 
-
     public Resume get(String uuid) {
         int exist = getExist(uuid);
         if (getExist(uuid) != -1)
@@ -49,11 +48,10 @@ public class ArrayStorage {
         if (exist != -1) {
             if (exist != size - 1) {
                 storage[exist] = storage[size - 1];
-                storage[size - 1] = null;
-            } else storage[exist] = null;
+            }
+            storage[size - 1] = null;
             size--;
         } else System.out.println("Resume is not present");
-
     }
 
     public Resume[] getAll() {
