@@ -47,12 +47,14 @@ class ArrayStorage {
     }
 
     void save(Resume r) {
-        if (r.getUuid() != null) {
-            if (isExist(r.getUuid()) == -1) {
-                storage[size] = r;
-                size++;
-            } else System.out.println("\nResume is present");
-        }
+        if (size < 10000)
+            if (r.getUuid() != null)
+                if (isExist(r.getUuid()) == -1) {
+                    storage[size] = r;
+                    size++;
+                } else System.out.println("\nResume is present");
+            else System.out.println("You don't input uuid");
+        else System.out.println("\nBase is full");
     }
 
     Resume get(String uuid) {
