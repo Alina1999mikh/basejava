@@ -12,7 +12,7 @@ public class ArrayStorage {
         size = 0;
     }
 
-    private boolean checkPresent(String uuid) {
+    private boolean isExist(String uuid) {
         boolean isExist = false;
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) {
@@ -25,7 +25,7 @@ public class ArrayStorage {
 
     void save(Resume r) {
         if (r.uuid != null) {
-            if (!checkPresent(r.uuid)) {
+            if (!isExist(r.uuid)) {
                 storage[size] = r;
                 size++;
             } else System.out.println("\nResume is present");
