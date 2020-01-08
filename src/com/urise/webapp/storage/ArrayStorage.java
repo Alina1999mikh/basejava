@@ -2,10 +2,6 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 /**
  * Array based storage for Resumes
  */
@@ -21,21 +17,11 @@ public class ArrayStorage {
         size = 0;
     }
 
-    public void update(String uuid) throws IOException {
-        if (uuid != null) {
-            int exist = getExist(uuid);
-            if (exist != -1) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                while (true) {
-                    System.out.println("Input update uuid");
-                    String updateUuid = reader.readLine();
-                    if (getExist(updateUuid) == -1) {
-                        storage[exist].setUuid(updateUuid);
-                        break;
-                    } else System.out.println("Resume is present");
-                }
-            } else System.out.println("\nResume is not present");
-        }
+    public void update(Resume resume) {
+        int exist = getExist(resume.getUuid());
+        if (exist != -1) {
+            storage[exist] = resume;
+        } else System.out.println("\nResume is not present");
     }
 
     public void save(Resume resume) {
