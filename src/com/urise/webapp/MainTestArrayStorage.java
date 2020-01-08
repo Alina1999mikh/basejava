@@ -1,9 +1,10 @@
 /*
  * Test for your ArrayStorage implementation
  */
-package com.urise.webapp.storage;
+package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.ArrayStorage;
 
 public class MainTestArrayStorage {
     private static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
