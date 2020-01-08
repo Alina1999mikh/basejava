@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /**
  * Array based storage for Resumes
  */
@@ -19,6 +23,23 @@ public class ArrayStorage {
             }
         }
         return -1; // THE RESUME IS NOT PRESENT
+    }
+
+    void update(String uuid) throws IOException {
+        if (uuid != null) {
+            int exist = isExist(uuid);
+            if (exist != -1) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                while (true) {
+                    System.out.println("Input update uuid");
+                    String updateUuid = reader.readLine();
+                    if (isExist(updateUuid) == -1) {
+                        storage[exist].uuid = updateUuid;
+                        break;
+                    } else System.out.println("Resume is present");
+                }
+            } else System.out.println("\nResume is not present");
+        }
     }
 
     void save(Resume r) {

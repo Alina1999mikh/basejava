@@ -36,10 +36,10 @@ public class MainArray {
                     ARRAY_STORAGE.save(r);
                     printAll();
                     break;
-                /*case "update":
+                case "update":
                     ARRAY_STORAGE.update(uuid);
                     printAll();
-                    break;*/
+                    break;
                 case "delete":
                     ARRAY_STORAGE.delete(uuid);
                     printAll();
