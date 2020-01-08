@@ -56,12 +56,10 @@ class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return storage[i];
-            }
-        }
-        return null;
+        int exist = isExist(uuid);
+        if (isExist(uuid) != -1)
+            return storage[exist];
+        else return null;
     }
 
     void delete(String uuid) {
