@@ -12,19 +12,24 @@ public class ArrayStorage {
         size = 0;
     }
 
+    private boolean checkPresent(Resume r) {
+        boolean isExist = false;
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(r.uuid)) {
+                isExist = true;
+                break;
+            }
+        }
+        return isExist;
+    }
+
+
     void save(Resume r) {
         if (r.uuid != null) {
-            boolean flag = false;
-            for (int i = 0; i < size; i++) {
-                if (storage[i].uuid.equals(r.uuid)) {
-                    flag = true;
-                    break;
-                }
-            }
-            if (!flag) {
+            if (!checkPresent(r)) {
                 storage[size] = r;
                 size++;
-            }
+            } else System.out.println("\nResume is present");
         }
     }
 
@@ -54,9 +59,9 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] fullStorage = new Resume[size];
-        System.arraycopy(storage, 0, fullStorage, 0, size);
-        return fullStorage;
+        Resume[] resumes = new Resume[size];
+        System.arraycopy(storage, 0, resumes, 0, size);
+        return resumes;
     }
 
     int size() {
