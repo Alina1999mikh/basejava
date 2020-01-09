@@ -9,34 +9,40 @@ import java.util.Arrays;
  */
 
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10_000];
+    private static final int STORAGE_LIMIT = 10_000;
+    private Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
     public void clear() {
-        Arrays.fill(storage,null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
     public void update(Resume resume) {
-        int exist = getExist(resume.getUuid());
+        int exist = getElementPosition(resume.getUuid());
         if (exist != -1) {
             storage[exist] = resume;
         } else System.out.println("\nResume is not present");
     }
 
     public void save(Resume resume) {
-        if (size < 10_000) {
-            if (getExist(resume.getUuid()) == -1) {
+        if (size < STORAGE_LIMIT) {
+            if (getElementPosition(resume.getUuid()) == -1) {
                 storage[size] = resume;
                 size++;
-            } else System.out.println("\nResume is present");
-        } else System.out.println("\nBase is full");
+            } else {
+                System.out.println("\nResume is present");
+            }
+        } else {
+            System.out.println("\nStorage is overflow");
+        }
     }
 
     public Resume get(String uuid) {
-        int exist = getExist(uuid);
-        if (getExist(uuid) != -1)
+        int exist = getElementPosition(uuid);
+        if (exist != -1) {
             return storage[exist];
+        }
         else {
             System.out.println("Resume is not present");
             return null;
@@ -44,27 +50,27 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        int exist = getExist(uuid);
+        int exist = getElementPosition(uuid);
         if (exist != -1) {
             if (exist != size - 1) {
                 storage[exist] = storage[size - 1];
             }
             storage[size - 1] = null;
             size--;
-        } else System.out.println("Resume is not present");
+        } else {
+            System.out.println("Resume is not present");
+        }
     }
 
     public Resume[] getAll() {
-        Resume[] resumes = new Resume[size];
-        System.arraycopy(storage, 0, resumes, 0, size);
-        return resumes;
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     public int size() {
         return size;
     }
 
-    private int getExist(String uuid) {
+    private int getElementPosition(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
