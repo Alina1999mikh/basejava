@@ -35,5 +35,4 @@ public class Resume {
     public int hashCode() {
         return uuid.hashCode();
     }
-
 }
