@@ -24,8 +24,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public void save(Resume resume) {
         if (size < STORAGE_LIMIT) {
-            int index=getIndex(resume.getUuid()); // TODO WHAT ABOUT RETURN
-            System.out.println(index);
+            int index = getIndex(resume.getUuid()); // TO DO ЧТО ДЕЛАЕТ БИН СЕАРЧ МОЖЕТ НЕ ==-1 ПРОВЕРКА. ЧТО ВОЗВРАЩАЕТ ТО
             if (index < 0) {
                 insertElement(resume, index);
                 size++;
@@ -68,8 +67,9 @@ public abstract class AbstractArrayStorage implements Storage {
             return null;
         }
     }
-
     protected abstract int getIndex(String uuid);
+
     protected abstract void insertElement(Resume resume, int index);
+
     protected abstract void fillDeletedElement(int index);
 }
