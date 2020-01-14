@@ -40,10 +40,10 @@ public class Resume implements Comparable<Resume> {
     public int compareTo(Resume resume) {
         if (this.getUuid().equals(resume.getUuid())) {
             return 0;
-        } else if (this.getUuid().compareTo(resume.getUuid()) > 0) {
-            return 1;
-        } else {
+        } else if (this.getUuid().compareTo(resume.getUuid()) < 0) {
             return -1;
+        } else {
+            return 1;
         }
     }
 }

@@ -24,7 +24,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public void save(Resume resume) {
         if (size < STORAGE_LIMIT) {
-            int index = getIndex(resume.getUuid()); // TO DO ЧТО ДЕЛАЕТ БИН СЕАРЧ МОЖЕТ НЕ ==-1 ПРОВЕРКА. ЧТО ВОЗВРАЩАЕТ ТО
+            int index = getIndex(resume.getUuid());
             if (index < 0) {
                 insertElement(resume, index);
                 size++;
