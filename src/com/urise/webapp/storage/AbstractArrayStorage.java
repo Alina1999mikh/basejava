@@ -6,9 +6,9 @@ import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
 
-    private static final int STORAGE_LIMIT = 10_000;
-    Resume[] storage = new Resume[STORAGE_LIMIT];
-    int size = 0;
+    protected static final int STORAGE_LIMIT = 10_000;
+    protected Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected int size = 0;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -67,6 +67,7 @@ public abstract class AbstractArrayStorage implements Storage {
             return null;
         }
     }
+
     protected abstract int getIndex(String uuid);
 
     protected abstract void insertElement(Resume resume, int index);

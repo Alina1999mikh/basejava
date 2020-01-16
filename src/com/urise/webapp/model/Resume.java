@@ -38,12 +38,6 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public int compareTo(Resume resume) {
-        if (this.getUuid().equals(resume.getUuid())) {
-            return 0;
-        } else if (this.getUuid().compareTo(resume.getUuid()) < 0) {
-            return -1;
-        } else {
-            return 1;
-        }
+        return this.getUuid().compareTo(resume.getUuid());
     }
 }
