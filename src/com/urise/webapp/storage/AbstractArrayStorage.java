@@ -1,5 +1,8 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
+import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -19,7 +22,7 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(resume.getUuid());
         if (index >= 0) {
             storage[index] = resume;
-        } else System.out.println("\nResume is not present");
+        } else throw new NotExistStorageException(resume.getUuid());
     }
 
     public void save(Resume resume) {
@@ -29,11 +32,11 @@ public abstract class AbstractArrayStorage implements Storage {
                 insertElement(resume, index);
                 size++;
             } else {
-                System.out.println("\nResume is present");
+                throw new ExistStorageException(resume.getUuid());
             }
 
         } else {
-            System.out.println("\nStorage is overflow");
+            throw new StorageException("Storage is overflow", resume.getUuid());
         }
     }
 
@@ -46,7 +49,7 @@ public abstract class AbstractArrayStorage implements Storage {
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println("Resume is not present");
+            throw new NotExistStorageException(uuid);
         }
     }
 
@@ -63,8 +66,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             return storage[index];
         } else {
-            System.out.println("Resume is not present");
-            return null;
+            throw new NotExistStorageException(uuid);
         }
     }
 
