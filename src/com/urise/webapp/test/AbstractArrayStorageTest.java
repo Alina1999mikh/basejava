@@ -5,7 +5,6 @@ import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.AbstractArrayStorage;
-import com.urise.webapp.storage.ArrayStorage;
 import com.urise.webapp.storage.Storage;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,13 +12,17 @@ import org.junit.Test;
 
 public class AbstractArrayStorageTest {
 
-    private Storage storage = new ArrayStorage();
+    private Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = new Resume(UUID_1);
     private static final String UUID_2 = "uuid2";
     private static final Resume RESUME_2 = new Resume(UUID_2);
     private static final String UUID_3 = "uuid3";
     private static final Resume RESUME_3 = new Resume(UUID_3);
+
+    AbstractArrayStorageTest(Storage storage) {
+        this.storage=storage;
+    }
 
     @Before
     public void setUp() {
