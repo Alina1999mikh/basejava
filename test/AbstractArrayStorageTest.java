@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AbstractArrayStorageTest {
+abstract public class AbstractArrayStorageTest {
 
     private Storage storage;
     private static final String UUID_1 = "uuid1";
@@ -19,7 +19,7 @@ public class AbstractArrayStorageTest {
     private static final Resume RESUME_3 = new Resume(UUID_3);
 
     AbstractArrayStorageTest(Storage storage) {
-        this.storage=storage;
+        this.storage = storage;
     }
 
     @Before
@@ -54,13 +54,13 @@ public class AbstractArrayStorageTest {
         final String UUID_1 = "newUuid_1";
         final Resume RESUME_1 = new Resume(UUID_1);
         storage.save(RESUME_1);
+        storage.get(UUID_1);
+        assertSize(4);
     }
 
     @Test(expected = ExistStorageException.class)
     public void saveIsExist() {
-        final String UUID_EXIST = "uuid1";
-        final Resume RESUME_EXIST = new Resume(UUID_EXIST);
-        storage.save(RESUME_EXIST);
+        storage.save(RESUME_1);
     }
 
     @Test(expected = StorageException.class)
@@ -71,6 +71,7 @@ public class AbstractArrayStorageTest {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
+            System.out.println(e.getMessage());
             Assert.fail();
         }
         storage.save(new Resume());
@@ -92,7 +93,7 @@ public class AbstractArrayStorageTest {
     @Test
     public void getAll() {
         Resume[] all = storage.getAll();
-        assertSize(3);
+        Assert.assertEquals(3, all.length);
         Assert.assertEquals(RESUME_1, all[0]);
         Assert.assertEquals(RESUME_2, all[1]);
         Assert.assertEquals(RESUME_3, all[2]);
@@ -105,9 +106,9 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void get() {
-        assertEquals(RESUME_1);
-        assertEquals(RESUME_2);
-        assertEquals(RESUME_3);
+        assertGet(RESUME_1);
+        assertGet(RESUME_2);
+        assertGet(RESUME_3);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -119,7 +120,7 @@ public class AbstractArrayStorageTest {
         Assert.assertEquals(size, storage.size());
     }
 
-    private void assertEquals(Resume resume){
+    private void assertGet(Resume resume) {
         Assert.assertEquals(resume, storage.get(resume.getUuid()));
     }
 }
