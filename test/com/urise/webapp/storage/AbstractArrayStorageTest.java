@@ -51,10 +51,10 @@ abstract public class AbstractArrayStorageTest {
 
     @Test
     public void save() {
-        final String UUID_1 = "newUuid_1";
-        final Resume RESUME_1 = new Resume(UUID_1);
-        storage.save(RESUME_1);
-        storage.get(UUID_1);
+        final String newUuid = "newUuid";
+        final Resume resume = new Resume(newUuid);
+        storage.save(resume);
+        assertGet(resume);
         assertSize(4);
     }
 
@@ -71,8 +71,7 @@ abstract public class AbstractArrayStorageTest {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
-            System.out.println(e.getMessage());
-            Assert.fail();
+            Assert.fail(e.getMessage());
         }
         storage.save(new Resume());
     }
