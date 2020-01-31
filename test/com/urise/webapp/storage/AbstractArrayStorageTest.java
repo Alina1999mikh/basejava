@@ -1,9 +1,9 @@
+package com.urise.webapp.storage;
+
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.AbstractArrayStorage;
-import com.urise.webapp.storage.Storage;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +76,6 @@ abstract public class AbstractArrayStorageTest {
         }
         storage.save(new Resume());
     }
-
 
     @Test(expected = NotExistStorageException.class)
     public void delete() {
