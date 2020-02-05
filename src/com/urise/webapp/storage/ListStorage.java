@@ -25,6 +25,11 @@ public class ListStorage {
         }
     }
 
+    public void delete(String uuid) {
+        int indexResume = isExist(uuid);
+        listStorage.remove(indexResume);
+    }
+
     public Resume get(String uuid) {
         return listStorage.get(isExist(uuid));
     }
