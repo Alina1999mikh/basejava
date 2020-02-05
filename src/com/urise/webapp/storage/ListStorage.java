@@ -1,18 +1,32 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
+import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListStorage {
-    private static ArrayList<Resume> listStorage = new ArrayList<>();
+    private static List<Resume> listStorage = new ArrayList<>();
 
     public void clear() {
         listStorage.clear();
     }
 
+    public void update(Resume resume) {
+        int indexResume = isExist(resume.getUuid());
+        listStorage.set(indexResume, resume);
+    }
+
     public void save(Resume resume) {
-        listStorage.add(resume);
+        if (isNotExist(resume.getUuid())) {
+            listStorage.add(resume);
+        }
+    }
+
+    public Resume get(String uuid) {
+        return listStorage.get(isExist(uuid));
     }
 
     public void printAll() {
@@ -21,6 +35,20 @@ public class ListStorage {
 
     public int size() {
         return listStorage.size();
+    }
+
+    private int isExist(String uuid) {
+        for (Resume resume : listStorage) {
+            if (resume.getUuid().equals(uuid)) return listStorage.indexOf(resume);
+        }
+        throw new NotExistStorageException(uuid);
+    }
+
+    private boolean isNotExist(String uuid) {
+        for (Resume resume : listStorage) {
+            if (resume.getUuid().equals(uuid)) throw new ExistStorageException(uuid);
+        }
+        return true;
     }
 }
 

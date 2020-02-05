@@ -18,8 +18,11 @@ public class MainCollection {
         listStorage.save(RESUME_2);
         listStorage.save(RESUME_3);
         listStorage.printAll();
+        listStorage.update(RESUME_2);
         System.out.println(listStorage.size());
+        System.out.println("get" + listStorage.get("uuid1"));
         listStorage.clear();
         System.out.println(listStorage.size());
+
     }
 }
