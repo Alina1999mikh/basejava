@@ -15,7 +15,7 @@ public class ListStorage {
     }
 
     public void update(Resume resume) {
-        int indexResume = isExist(resume.getUuid());
+        int indexResume = getExist(resume.getUuid());
         listStorage.set(indexResume, resume);
     }
 
@@ -26,12 +26,12 @@ public class ListStorage {
     }
 
     public void delete(String uuid) {
-        int indexResume = isExist(uuid);
+        int indexResume = getExist(uuid);
         listStorage.remove(indexResume);
     }
 
     public Resume get(String uuid) {
-        return listStorage.get(isExist(uuid));
+        return listStorage.get(getExist(uuid));
     }
 
     public void printAll() {
@@ -42,7 +42,7 @@ public class ListStorage {
         return listStorage.size();
     }
 
-    private int isExist(String uuid) {
+    private int getExist(String uuid) {
         for (Resume resume : listStorage) {
             if (resume.getUuid().equals(uuid)) return listStorage.indexOf(resume);
         }
