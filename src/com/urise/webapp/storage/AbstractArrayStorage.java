@@ -1,47 +1,40 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
 
-    public static final int STORAGE_LIMIT = 10_000;
+    static final int STORAGE_LIMIT = 10_000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    public void clear() {
+    public void doClear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index >= 0) {
-            storage[index] = resume;
-        } else throw new NotExistStorageException(resume.getUuid());
+    public void doUpdate(Resume resume, int index) {
+        storage[index] = resume;
     }
 
-    public void save(Resume resume) {
+    public void doSave(Resume resume, int index) {
         if (size < STORAGE_LIMIT) {
-            int index = getIndex(resume.getUuid());
-            if (index < 0) {
-                insertElement(resume, index);
-                size++;
-            } else {
-                throw new ExistStorageException(resume.getUuid());
-            }
-
+            insertElement(resume, index);
+            size++;
         } else {
             throw new StorageException("Storage is overflow", resume.getUuid());
         }
     }
 
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
+    public Resume doGet(String uuid, int index) {
+        return storage[index];
+    }
+
+    public void doDelete(String uuid, int index) {
         if (index >= 0) {
             if (index != size - 1) {
                 fillDeletedElement(index);
@@ -53,21 +46,12 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
-    }
-
-    public int size() {
+    public int doSize() {
         return size;
     }
 
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+    public Resume[] getAll() {
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     protected abstract int getIndex(String uuid);

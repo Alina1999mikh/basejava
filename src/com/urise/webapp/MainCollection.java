@@ -17,10 +17,10 @@ public class MainCollection {
         listStorage.save(RESUME_1);
         listStorage.save(RESUME_2);
         listStorage.save(RESUME_3);
-        listStorage.printAll();
+        //listStorage.printAll();
         System.out.println();
         listStorage.delete("uuid3");
-        listStorage.printAll();
+       // listStorage.printAll();
 
         listStorage.update(RESUME_2);
         System.out.println(listStorage.size());
