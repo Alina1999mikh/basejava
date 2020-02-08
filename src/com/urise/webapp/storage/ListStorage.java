@@ -8,7 +8,7 @@ import java.util.List;
 public class ListStorage extends ArrayStorage {
     private static List<Resume> listStorage = new ArrayList<>();
 
-    public void doClear() {
+    public void clear() {
         listStorage.clear();
     }
 
@@ -32,7 +32,7 @@ public class ListStorage extends ArrayStorage {
         return listStorage.toArray(new Resume[0]);
     }
 
-    public int doSize() {
+    public int size() {
         return listStorage.size();
     }
 

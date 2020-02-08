@@ -5,10 +5,6 @@ import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
-    @Override
-    public void clear() {
-        doClear();
-    }
 
     @Override
     public void update(Resume resume) {
@@ -34,11 +30,6 @@ public abstract class AbstractStorage implements Storage {
         doDelete(uuid, index);
     }
 
-    @Override
-    public int size() {
-        return doSize();
-    }
-
     private int getExist(String uuid) {
         int index = getIndex(uuid);
         if (isExist(index)) {
@@ -61,8 +52,6 @@ public abstract class AbstractStorage implements Storage {
         return index >= 0;
     }
 
-    protected abstract void doClear();
-
     protected abstract void doUpdate(Resume resume, int index);
 
     protected abstract void doSave(Resume resume, int index);
@@ -70,8 +59,6 @@ public abstract class AbstractStorage implements Storage {
     protected abstract Resume doGet(String uuid, int index);
 
     protected abstract void doDelete(String uuid, int index);
-
-    protected abstract int doSize();
 
     protected abstract int getIndex(String uuid);
 }
