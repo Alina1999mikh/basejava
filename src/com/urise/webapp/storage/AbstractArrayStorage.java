@@ -1,6 +1,5 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
@@ -35,15 +34,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     public void doDelete(String uuid, int index) {
-        if (index >= 0) {
-            if (index != size - 1) {
-                fillDeletedElement(index);
-            }
-            storage[size - 1] = null;
-            size--;
-        } else {
-            throw new NotExistStorageException(uuid);
+        if (index != size - 1) {
+            fillDeletedElement(index);
         }
+        storage[size - 1] = null;
+        size--;
     }
 
     public int doSize() {
