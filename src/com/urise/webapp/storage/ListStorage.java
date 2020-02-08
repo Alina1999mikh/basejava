@@ -43,8 +43,8 @@ public class ListStorage {
     }
 
     private int getExist(String uuid) {
-        for (Resume resume : listStorage) {
-            if (resume.getUuid().equals(uuid)) return listStorage.indexOf(resume);
+        for (int i = 0; i < listStorage.size(); i++) {
+            if (listStorage.get(i).getUuid().equals(uuid)) return i;
         }
         throw new NotExistStorageException(uuid);
     }
