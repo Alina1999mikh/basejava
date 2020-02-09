@@ -8,30 +8,30 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        Integer index = getExist(resume.getUuid());
+        Integer index = getIndex(resume.getUuid());
         doUpdate(resume, index);
     }
 
     @Override
     public void save(Resume resume) {
-        int index = getNotExist(resume.getUuid());
+        int index = getNotIndex(resume.getUuid());
         doSave(resume, index);
     }
 
     @Override
     public Resume get(String uuid) {
-        int index = getExist(uuid);
+        int index = getIndex(uuid);
         return doGet(index);
     }
 
     @Override
     public void delete(String uuid) {
-        int index = getExist(uuid);
+        int index = getIndex(uuid);
         doDelete(index);
     }
 
-    private Integer getExist(String uuid) {
-        Integer index = getIndex(uuid);
+    private Integer getIndex(String uuid) {
+        Integer index = findIndex(uuid);
         if (isExist(index)) {
             return index;
         } else {
@@ -39,8 +39,8 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-    private int getNotExist(String uuid) {
-        Integer index = getIndex(uuid);
+    private int getNotIndex(String uuid) {
+        Integer index = findIndex(uuid);
         if (!isExist(index)) {
             if (index == null) return -1;
             else return index;
@@ -61,5 +61,5 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void doDelete(int index);
 
-    protected abstract Integer getIndex(String uuid);
+    protected abstract Integer findIndex(String uuid);
 }
