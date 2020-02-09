@@ -15,6 +15,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume resume, Object index) {
+        map.put((String) index, resume);
     }
 
     @Override
