@@ -11,16 +11,19 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public void doUpdate(Resume resume, int index) {
+    @Override
+    protected void doUpdate(Resume resume, int index) {
         storage[index] = resume;
     }
 
-    public void doSave(Resume resume, int index) {
+    @Override
+    protected void doSave(Resume resume, int index) {
         if (size < STORAGE_LIMIT) {
             insertElement(resume, index);
             size++;
@@ -29,11 +32,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 
-    public Resume doGet(String uuid, int index) {
+    @Override
+    protected Resume doGet(int index) {
         return storage[index];
     }
 
-    public void doDelete(String uuid, int index) {
+    @Override
+    protected void doDelete(int index) {
         if (index != size - 1) {
             fillDeletedElement(index);
         }
@@ -41,15 +46,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size--;
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
-
-    protected abstract int getIndex(String uuid);
 
     protected abstract void insertElement(Resume resume, int index);
 
