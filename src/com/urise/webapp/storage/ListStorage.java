@@ -14,23 +14,23 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void doUpdate(Resume resume, int index) {
-        listStorage.set(index, resume);
+    public void doUpdate(Resume resume, Object index) {
+        listStorage.set((Integer) index, resume);
     }
 
     @Override
-    public void doSave(Resume resume, int index) {
+    public void doSave(Resume resume, Object index) {
         listStorage.add(resume);
     }
 
     @Override
-    public Resume doGet(int index) {
-        return listStorage.get(index);
+    public Resume doGet(Object index) {
+        return listStorage.get((int) index);
     }
 
     @Override
-    public void doDelete(int index) {
-        listStorage.remove(index);
+    public void doDelete(Object index) {
+        listStorage.remove((int) index);
     }
 
     @Override
@@ -44,7 +44,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Integer findIndex(String uuid) {
+    protected boolean isExist(Object index) {
+        return index != null;
+    }
+
+    @Override
+    public Object findIndex(String uuid) {
         for (int i = 0; i < listStorage.size(); i++) {
             if (listStorage.get(i).getUuid().equals(uuid)) return i;
         }
