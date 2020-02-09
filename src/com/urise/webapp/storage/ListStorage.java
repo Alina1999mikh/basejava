@@ -34,21 +34,21 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return listStorage.toArray(new Resume[0]);
-    }
-
-    @Override
     public int size() {
         return listStorage.size();
     }
 
     @Override
-    public int getIndex(String uuid) {
+    public Resume[] getAll() {
+        return listStorage.toArray(new Resume[0]);
+    }
+
+    @Override
+    public Integer getIndex(String uuid) {
         for (int i = 0; i < listStorage.size(); i++) {
             if (listStorage.get(i).getUuid().equals(uuid)) return i;
         }
-        return -1;
+        return null;
     }
 }
 
