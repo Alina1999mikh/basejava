@@ -31,7 +31,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     private Object getIndex(String uuid) {
-        Object index =findIndex(uuid);
+        Object index = findIndex(uuid);
         if (isExist(index)) {
             return index;
         } else {
@@ -48,6 +48,7 @@ public abstract class AbstractStorage implements Storage {
             throw new ExistStorageException(uuid);
         }
     }
+
     protected abstract boolean isExist(Object index);
 
     protected abstract void doUpdate(Resume resume, Object index);
