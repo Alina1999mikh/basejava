@@ -1,8 +1,15 @@
 package com.urise.webapp.storage;
 
-public class MapStorageTest extends AbstractArrayStorageTest{
+import org.junit.Test;
+
+public class MapStorageTest extends AbstractStorageTest {
 
     public MapStorageTest() {
         super(new MapStorage());
+    }
+
+    @Test
+    public void getAll() {
+
     }
 }
