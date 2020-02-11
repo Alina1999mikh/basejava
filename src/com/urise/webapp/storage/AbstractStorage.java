@@ -8,30 +8,30 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        Object index = ExistedIndex(resume.getUuid());
+        Object index = getExistedSearchKey(resume.getUuid());
         doUpdate(resume, index);
     }
 
     @Override
     public void save(Resume resume) {
-        Object index = NotExistedIndex(resume.getUuid());
+        Object index = getNotExistedSearchKey(resume.getUuid());
         doSave(resume, index);
     }
 
     @Override
     public Resume get(String uuid) {
-        Object index = ExistedIndex(uuid);
+        Object index = getExistedSearchKey(uuid);
         return doGet(index);
     }
 
     @Override
     public void delete(String uuid) {
-        Object index = ExistedIndex(uuid);
+        Object index = getExistedSearchKey(uuid);
         doDelete(index);
     }
 
-    private Object ExistedIndex(String uuid) {
-        Object index = findIndex(uuid);
+    private Object getExistedSearchKey(String uuid) {
+        Object index = findSearchKey(uuid);
         if (isExist(index)) {
             return index;
         } else {
@@ -39,8 +39,8 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-    private Object NotExistedIndex(String uuid) {
-        Object index = findIndex(uuid);
+    private Object getNotExistedSearchKey(String uuid) {
+        Object index = (uuid);
         if (!isExist(index)) {
             return index;
         } else {
@@ -50,13 +50,13 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract boolean isExist(Object index);
 
-    protected abstract void doUpdate(Resume resume, Object index);
+    protected abstract void doUpdate(Resume resume, Object searchKey);
 
-    protected abstract void doSave(Resume resume, Object index);
+    protected abstract void doSave(Resume resume, Object searchKey);
 
-    protected abstract Resume doGet(Object index);
+    protected abstract Resume doGet(Object searchKey);
 
-    protected abstract void doDelete(Object index);
+    protected abstract void doDelete(Object searchKey);
 
-    protected abstract Object findIndex(String uuid);
+    protected abstract Object findSearchKey(String uuid);
 }
