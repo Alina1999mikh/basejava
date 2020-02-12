@@ -16,23 +16,23 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object key) {
-        map.put((String) key, resume);
+    protected void doUpdate(Resume resume, Object searchKey) {
+        map.put((String) searchKey, resume);
     }
 
     @Override
-    protected void doSave(Resume resume, Object key) {
+    protected void doSave(Resume resume, Object searchKey) {
         map.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume doGet(Object key) {
-        return map.get((String) key);
+    protected Resume doGet(Object searchKey) {
+        return map.get((String) searchKey);
     }
 
     @Override
-    protected void doDelete(Object key) {
-        map.remove((String) key);
+    protected void doDelete(Object searchKey) {
+        map.remove((String) searchKey);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object key) {
-        return map.containsKey((String) key);
+    protected boolean isExist(Object searchKey) {
+        return map.containsKey((String) searchKey);
     }
 }
