@@ -4,6 +4,7 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 
 public class SortedArrayStorage extends AbstractArrayStorage {
@@ -12,7 +13,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected Integer findSearchKey(String uuid) {
-        Resume searchKey = new Resume(uuid);
+        Resume searchKey = new Resume(uuid, "empty");
         return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
     }
 
@@ -28,5 +29,10 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         if (size - 1 - (Integer) index >= 0) {
             System.arraycopy(storage, (Integer) index + 1, storage, (Integer) index, size - 1 - (Integer) index);
         }
+    }
+
+    @Override
+    protected List<Resume> getAllSorted() {
+        return Arrays.asList((Arrays.copyOfRange(storage, 0, size)));
     }
 }
