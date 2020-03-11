@@ -39,7 +39,7 @@ public class MainArray {
                     printAll();
                     break;
                 case "update":
-                    resume = new Resume(param);
+                    resume = new Resume(param, params[2]);
                     ARRAY_STORAGE.update(resume);
                     printAll();
                     break;
@@ -48,7 +48,10 @@ public class MainArray {
                     printAll();
                     break;
                 case "get":
-                    System.out.println(ARRAY_STORAGE.get(param));
+                    Resume storageGet = ARRAY_STORAGE.get(param);
+                    System.out.print("Name: " + storageGet.getFullName());
+                    System.out.println("     ");
+                    System.out.println(" UUID: " + storageGet.getUuid());
                     break;
                 case "clear":
                     ARRAY_STORAGE.clear();
@@ -70,7 +73,10 @@ public class MainArray {
             System.out.println("Empty");
         } else {
             for (Resume r : all) {
-                System.out.println(r.getFullName());
+                System.out.print("Name: " + r.getFullName());
+                System.out.print("     ");
+                System.out.println("UUID: " + r.getUuid());
+
             }
         }
         System.out.println("----------------------------");
