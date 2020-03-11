@@ -39,7 +39,7 @@ public class MapStorage extends AbstractStorage {
 
     public List<Resume> getAllSorted() {
         List<Resume> listStorage = new ArrayList<>(map.values());
-        listStorage.sort(Comparator.comparing(Resume::getUuid));
+        listStorage.sort(Comparator.comparing(Resume::getFullName));
         return listStorage;
     }
 

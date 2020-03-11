@@ -4,7 +4,6 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 
 
 public class SortedArrayStorage extends AbstractArrayStorage {
@@ -29,10 +28,5 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         if (size - 1 - (Integer) index >= 0) {
             System.arraycopy(storage, (Integer) index + 1, storage, (Integer) index, size - 1 - (Integer) index);
         }
-    }
-
-    @Override
-    protected List<Resume> getAllSorted() {
-        return Arrays.asList((Arrays.copyOfRange(storage, 0, size)));
     }
 }

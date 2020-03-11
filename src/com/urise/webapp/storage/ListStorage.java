@@ -42,7 +42,7 @@ public class ListStorage extends AbstractStorage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> listStorageSort = new ArrayList<>(listStorage);
-        listStorageSort.sort(Comparator.comparing(Resume::getUuid));
+        listStorageSort.sort(Comparator.comparing(Resume::getFullName));
         return listStorageSort;
     }
 
