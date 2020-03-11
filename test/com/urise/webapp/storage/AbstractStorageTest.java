@@ -7,10 +7,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 public abstract class AbstractStorageTest {
     protected Storage storage;
     protected static final String UUID_1 = "uuid1";
@@ -77,14 +73,14 @@ public abstract class AbstractStorageTest {
         storage.delete("itIsNotExist");
     }
 
-    @Test
+  /*  @Test
     public void getAll() {
         List<Resume> list = storage.getAll();
         Assert.assertEquals(3, list.size());
         List<Resume> sortedResumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
         Collections.sort(sortedResumes);
         Assert.assertEquals(sortedResumes, list);
-    }
+    }*/
 
     @Test
     public void size() {
