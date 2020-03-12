@@ -3,7 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
@@ -42,7 +42,7 @@ public class ListStorage extends AbstractStorage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> listStorageSort = new ArrayList<>(listStorage);
-        listStorageSort.sort(Comparator.comparing(Resume::getFullName));
+        Collections.sort(listStorageSort);
         return listStorageSort;
     }
 

@@ -49,9 +49,7 @@ public class MainArray {
                     break;
                 case "get":
                     Resume storageGet = ARRAY_STORAGE.get(param);
-                    System.out.print("Name: " + storageGet.getFullName());
-                    System.out.println("     ");
-                    System.out.println(" UUID: " + storageGet.getUuid());
+                    System.out.print(storageGet);
                     break;
                 case "clear":
                     ARRAY_STORAGE.clear();
@@ -73,10 +71,7 @@ public class MainArray {
             System.out.println("Empty");
         } else {
             for (Resume r : all) {
-                System.out.print("Name: " + r.getFullName());
-                System.out.print("     ");
-                System.out.println("UUID: " + r.getUuid());
-
+                System.out.println(r);
             }
         }
         System.out.println("----------------------------");

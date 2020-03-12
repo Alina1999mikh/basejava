@@ -33,7 +33,7 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public String toString() {
-        return uuid;
+        return ("Name: " + fullName + " Uuid: " + uuid);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Resume implements Comparable<Resume> {
     @Override
     public int hashCode() {
         int result = uuid.hashCode();
-        result = 37 * result + fullName.hashCode();
+        result = 31 * result + fullName.hashCode();
         return result;
     }
 
