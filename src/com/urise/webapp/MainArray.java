@@ -49,7 +49,7 @@ public class MainArray {
                     break;
                 case "get":
                     Resume storageGet = ARRAY_STORAGE.get(param);
-                    System.out.print(storageGet);
+                    System.out.println(storageGet);
                     break;
                 case "clear":
                     ARRAY_STORAGE.clear();
@@ -65,7 +65,7 @@ public class MainArray {
     }
 
     private static void printAll() {
-        List<Resume> all = ARRAY_STORAGE.getAll();
+        List<Resume> all = ARRAY_STORAGE.getAllSorted();
         System.out.println("----------------------------");
         if (all.size() == 0) {
             System.out.println("Empty");
