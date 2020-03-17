@@ -6,36 +6,44 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class AbstractStorage<SK> implements Storage {
-
+    protected final Logger log = Logger.getLogger(getClass().getName());
+    private static final Logger LOG=Logger.getLogger(AbstractStorage.class.getName());
     @Override
     public void update(Resume resume) {
+        LOG.info("Update: "+resume);
         SK searchKey = getExistedSearchKey(resume.getUuid());
         doUpdate(resume, searchKey);
     }
 
     @Override
     public void save(Resume resume) {
+        LOG.info("Save: "+resume);
         SK searchKey = getNotExistedSearchKey(resume.getUuid());
         doSave(resume, searchKey);
     }
 
     @Override
     public Resume get(String uuid) {
+        LOG.info("Get: "+uuid);
         SK index = getExistedSearchKey(uuid);
         return doGet(index);
     }
 
     @Override
     public void delete(String uuid) {
+        LOG.info("Delete: "+uuid);
         SK searchKey = getExistedSearchKey(uuid);
         doDelete(searchKey);
     }
 
+    @Override
     public List<Resume> getAllSorted() {
-        List <Resume> listStorage=getAll();
+        List<Resume> listStorage = getAll();
         Collections.sort(listStorage);
+        LOG.info("Get all: "+listStorage);
         return listStorage;
     }
 
@@ -44,6 +52,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         if (isExist(searchKey)) {
             return searchKey;
         } else {
+            LOG.warning("Resume "+ uuid+" is not exist!");
             throw new NotExistStorageException(uuid);
         }
     }
@@ -53,6 +62,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         if (!isExist(searchKey)) {
             return searchKey;
         } else {
+            LOG.warning("Resume "+ uuid+" already exist!");
             throw new ExistStorageException(uuid);
         }
     }
