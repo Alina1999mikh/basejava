@@ -6,7 +6,7 @@ import com.urise.webapp.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     static final int STORAGE_LIMIT = 10_000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -19,12 +19,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object index) {
-        storage[(Integer) index] = resume;
+    protected void doUpdate(Resume resume, Integer index) {
+        storage[index] = resume;
     }
 
     @Override
-    protected void doSave(Resume resume, Object index) {
+    protected void doSave(Resume resume, Integer index) {
         if (size < STORAGE_LIMIT) {
             insertElement(resume, index);
             size++;
@@ -34,13 +34,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(Object index) {
-        return storage[(Integer) index];
+    protected Resume doGet(Integer index) {
+        return storage[index];
     }
 
     @Override
-    protected void doDelete(Object index) {
-        if ((Integer) index != size - 1) {
+    protected void doDelete(Integer index) {
+        if (index != size - 1) {
             fillDeletedElement(index);
         }
         storage[size - 1] = null;
@@ -53,8 +53,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return ((int) index >= 0);
+    protected boolean isExist(Integer index) {
+        return (index >= 0);
     }
 
     @Override
@@ -64,7 +64,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return listStorage;
     }
 
-    protected abstract void insertElement(Resume resume, Object index);
+    protected abstract void insertElement(Resume resume, Integer index);
 
-    protected abstract void fillDeletedElement(Object index);
+    protected abstract void fillDeletedElement(Integer index);
 }
