@@ -1,5 +1,7 @@
 package com.urise.webapp.model;
 
+import java.util.Objects;
+
 public enum SectionType {
     PERSONAL("Личные качества"),
     OBJECTIVE("Позиция"),
@@ -18,4 +20,8 @@ public enum SectionType {
         return title;
     }
 
+    /**
+     * gkislin
+     * 14.07.2016
+     */
 }
