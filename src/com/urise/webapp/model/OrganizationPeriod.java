@@ -1,6 +1,9 @@
 package com.urise.webapp.model;
 
+import com.urise.webapp.util.DataUtil;
+
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Objects;
 
 public class OrganizationPeriod {
@@ -9,12 +12,18 @@ public class OrganizationPeriod {
     private String title;
     private String text;
 
-    public OrganizationPeriod(LocalDate startDate, LocalDate endDate, String title, String text) {
-        Objects.requireNonNull(startDate, "Start date can't be NULL!");
-        Objects.requireNonNull(endDate, "End date can't be NULL!");
+    public OrganizationPeriod(int startDateYear, int startDateMonth, int endDateYear, int endDateMonth, String title, String text) {
         Objects.requireNonNull(title, "Title can't be NULL!");
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = DataUtil.of(startDateYear, startDateMonth);
+        this.endDate = DataUtil.of(endDateYear,endDateMonth);
+        this.title = title;
+        this.text = text;
+    }
+
+    public OrganizationPeriod(int startDateYear,int startDateMonth, LocalDate endDateNow, String title, String text) {
+        Objects.requireNonNull(title, "Title can't be NULL!");
+        this.startDate = DataUtil.of(startDateYear,startDateMonth);
+        this.endDate = endDateNow;
         this.title = title;
         this.text = text;
     }

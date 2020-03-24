@@ -1,7 +1,5 @@
 package com.urise.webapp.model;
 
-import com.urise.webapp.storage.ListStorage;
-
 import java.util.List;
 import java.util.Objects;
 
