@@ -5,7 +5,7 @@ import com.urise.webapp.storage.ListStorage;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection {
+public class ListSection extends Section{
     private final List<String> items;
 
     public ListSection(List<String> items) {

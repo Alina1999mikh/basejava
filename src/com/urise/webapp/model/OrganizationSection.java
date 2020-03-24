@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class OrganizationSection extends Section {
+
     private final List<Organization> organization;
 
     public OrganizationSection(List<Organization> organization) {
@@ -22,5 +23,12 @@ public class OrganizationSection extends Section {
     @Override
     public int hashCode() {
         return Objects.hash(organization);
+    }
+
+    @Override
+    public String toString() {
+        return "OrganizationSection{" +
+                "organization=" + organization +
+                '}';
     }
 }

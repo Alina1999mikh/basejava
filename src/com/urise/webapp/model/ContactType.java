@@ -1,7 +1,7 @@
 package com.urise.webapp.model;
 
 public enum ContactType {
-    PHONE ("Тел.:"),
+    PHONE("Тел.:"),
     SKYPE("Skype:"),
     MAIL(""),
     LINKEDIN("Профиль LinkedIn"),
@@ -11,11 +11,11 @@ public enum ContactType {
 
     private String title;
 
-    ContactType(String title){
-        this.title=title;
+    ContactType(String title) {
+        this.title = title;
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return title;
     }
 }

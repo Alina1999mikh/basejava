@@ -6,10 +6,9 @@ public class Link {
     private final String name;
     private final String url;
 
-
     public Link(String name, String url) {
         this.name = name;
-        this.url=url;
+        this.url = url;
     }
 
     public String getName() {
@@ -36,9 +35,15 @@ public class Link {
 
     @Override
     public String toString() {
-        return "Link{" +
-                "name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                '}';
+        String string;
+        if (this.url != null) {
+            string = "Link{" +
+                    "name='" + name + '\'' +
+                    ", url='" + url + '\'' +
+                    '}';
+        } else {
+            string = "name='" + name + '\'';
+        }
+        return string;
     }
 }
