@@ -6,7 +6,8 @@ public class Link {
     private final String name;
     private final String url;
 
-    protected Link(String name, String url) {
+    Link(String name, String url) {
+        Objects.requireNonNull(name, "Name can't be NULL!");
         this.name = name;
         this.url = url;
     }

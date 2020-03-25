@@ -5,11 +5,11 @@ import java.util.Objects;
 
 public class OrganizationSection extends Section {
 
-    private final List<Organization> organization;
+    private final List<Organization> organizations;
 
     public OrganizationSection(List<Organization> organization) {
         Objects.requireNonNull(organization, "Organization can't be NULL!");
-        this.organization = organization;
+        this.organizations = organization;
     }
 
     @Override
@@ -17,18 +17,18 @@ public class OrganizationSection extends Section {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrganizationSection that = (OrganizationSection) o;
-        return organization.equals(that.organization);
+        return organizations.equals(that.organizations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(organization);
+        return Objects.hash(organizations);
     }
 
     @Override
     public String toString() {
         return "OrganizationSection{" +
-                "organization=" + organization +
+                "organization=" + organizations +
                 '}';
     }
 }

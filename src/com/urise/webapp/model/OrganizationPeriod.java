@@ -3,7 +3,6 @@ package com.urise.webapp.model;
 import com.urise.webapp.util.DataUtil;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.Objects;
 
 public class OrganizationPeriod {
@@ -23,6 +22,7 @@ public class OrganizationPeriod {
     public OrganizationPeriod(int startDateYear,int startDateMonth, LocalDate endDateNow, String title, String text) {
         Objects.requireNonNull(title, "Title can't be NULL!");
         this.startDate = DataUtil.of(startDateYear,startDateMonth);
+        Objects.requireNonNull(endDateNow, "End date can't be NULL!");
         this.endDate = endDateNow;
         this.title = title;
         this.text = text;
