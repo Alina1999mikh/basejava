@@ -5,6 +5,7 @@ import com.urise.webapp.model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,29 +32,31 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doUpdate(Resume resume, File file) {
-
+        try {
+            doWrite(resume, file);
+        } catch (IOException e) {
+            throw new StorageException("Update error", file.getName(), e);
+        }
     }
 
     @Override
     protected void doSave(Resume resume, File file) {
         try {
-            if(!file.createNewFile()) throw new StorageException("File cannot be create", file.getName());
+            if (!file.createNewFile()) throw new StorageException("File cannot be create", file.getName());
             doWrite(resume, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("Save error", file.getName(), e);
         }
     }
 
-    abstract void doWrite(Resume resume, File file) throws IOException;
-
     @Override
     protected Resume doGet(File file) {
-        return null;
+        return doRead(file);
     }
 
     @Override
     protected void doDelete(File file) {
-
+        if (!file.delete()) throw new StorageException("File cannot be deleted", file.getName());
     }
 
     @Override
@@ -63,19 +66,27 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getAll() {
-        return null;
+        List<Resume> resumes = new ArrayList<>();
+        for (File file : Objects.requireNonNull(directory.listFiles())) {
+            resumes.add(doRead(file));
+        }
+        return resumes;
     }
 
     @Override
     public void clear() {
         File[] list = directory.listFiles();
-        for (File name : Objects.requireNonNull(list)) {
-            if (!name.delete()) throw new StorageException("File cannot be deleted", name.getName());
+        for (File file : Objects.requireNonNull(list)) {
+            doDelete(file);
         }
     }
 
     @Override
     public int size() {
-        return 0;
+        return Objects.requireNonNull(directory.listFiles()).length;
     }
+
+    abstract void doWrite(Resume resume, File file) throws IOException;
+
+    abstract Resume doRead(File file);
 }
