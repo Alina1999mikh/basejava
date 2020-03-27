@@ -4,6 +4,7 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -19,14 +20,14 @@ public abstract class AbstractStorage<SK> implements Storage {
     }
 
     @Override
-    public void save(Resume resume) {
+    public void save(Resume resume) throws IOException {
         LOG.info("Save: "+resume);
         SK searchKey = getNotExistedSearchKey(resume.getUuid());
         doSave(resume, searchKey);
     }
 
     @Override
-    public Resume get(String uuid) {
+    public Resume get(String uuid) throws IOException {
         LOG.info("Get: "+uuid);
         SK index = getExistedSearchKey(uuid);
         return doGet(index);
@@ -40,7 +41,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
+    public List<Resume> getAllSorted() throws IOException {
         List<Resume> listStorage = getAll();
         Collections.sort(listStorage);
         LOG.info("Get all: "+listStorage);
@@ -71,13 +72,13 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void doUpdate(Resume resume, SK searchKey);
 
-    protected abstract void doSave(Resume resume, SK searchKey);
+    protected abstract void doSave(Resume resume, SK searchKey) throws IOException;
 
-    protected abstract Resume doGet(SK searchKey);
+    protected abstract Resume doGet(SK searchKey) throws IOException;
 
     protected abstract void doDelete(SK searchKey);
 
     protected abstract SK findSearchKey(String uuid);
 
-    protected abstract List<Resume> getAll();
+    protected abstract List<Resume> getAll() throws IOException;
 }

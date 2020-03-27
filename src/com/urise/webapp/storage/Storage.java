@@ -2,6 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface Storage {
@@ -10,13 +11,13 @@ public interface Storage {
 
     void update(Resume resume);
 
-    void save(Resume resume);
+    void save(Resume resume) throws IOException;
 
-    Resume get(String uuid);
+    Resume get(String uuid) throws IOException;
 
     void delete(String uuid);
 
     int size();
 
-    List<Resume> getAllSorted();
+    List<Resume> getAllSorted() throws IOException;
 }

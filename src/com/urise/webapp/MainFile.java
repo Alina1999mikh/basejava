@@ -1,8 +1,9 @@
 package com.urise.webapp;
 
+import com.urise.webapp.exception.StorageException;
+
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -30,17 +31,23 @@ public class MainFile {
         File rootDir = new File("C:\\Users\\flenn\\basejava");
         File[] listRoot = rootDir.listFiles();
         assert listRoot != null;
-        recursionRound(Objects.requireNonNull(listRoot));
+        recursionRound(rootDir);
 
     }
 
-    private static void recursionRound(File[] listRoot) {
-
-        for (File file : listRoot) {
-            System.out.println(file);
-            if (file.isDirectory()) {
-                recursionRound(Objects.requireNonNull(file.listFiles()));
+    private static void recursionRound(File file) {
+        File[] list = file.listFiles();
+        if (list != null) {
+            for (File name : list) {
+                if (name.isDirectory()) {
+                    System.out.println("Directory: " + name.getName());
+                    recursionRound(name);
+                } else {
+                    System.out.println("File: " + name.getName());
+                }
             }
+        } else {
+            throw new StorageException("List is null!", file.getName());
         }
     }
 }

@@ -5,6 +5,8 @@ import com.urise.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
+
 abstract public class AbstractArrayStorageTest extends AbstractStorageTest {
 
     AbstractArrayStorageTest(Storage storage) {
@@ -12,13 +14,13 @@ abstract public class AbstractArrayStorageTest extends AbstractStorageTest {
     }
 
     @Test(expected = StorageException.class)
-    public void saveIsOverflow() {
+    public void saveIsOverflow() throws IOException {
         storage.clear();
         try {
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 storage.save(new Resume(Integer.toString(i)));
             }
-        } catch (StorageException e) {
+        } catch (StorageException | IOException e) {
             Assert.fail(e.getMessage());
         }
         storage.save(new Resume("overflow)"));

@@ -6,10 +6,12 @@ package com.urise.webapp;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.ArrayStorage;
 
+import java.io.IOException;
+
 public class MainTestArrayStorage {
     private static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Resume r1 = new Resume("uuid1");
         Resume r2 = new Resume("uuid2");
         Resume r3 = new Resume("uuid3");
@@ -32,7 +34,7 @@ public class MainTestArrayStorage {
         System.out.println("Size: " + ARRAY_STORAGE.size());
     }
 
-    private static void printAll() {
+    private static void printAll() throws IOException {
         System.out.println("\nGet All");
         for (Resume r : ARRAY_STORAGE.getAllSorted()) {
             System.out.println(r);
