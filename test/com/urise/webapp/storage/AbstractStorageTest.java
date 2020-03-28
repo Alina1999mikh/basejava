@@ -9,19 +9,11 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
     Storage storage;
-//    private static final String UUID_1 = "uuid1";
-//    private static final String NAME_1 = "name1";
-//    private static final Resume RESUME_1 = new Resume(UUID_1, NAME_1);
-//    private static final String UUID_2 = "uuid2";
-//    private static final String NAME_2 = "name2";
-//    private static final Resume RESUME_2 = new Resume(UUID_2, NAME_2);
-//    private static final String UUID_3 = "uuid3";
-//    private static final String NAME_3 = "name3";
-//    private static final Resume RESUME_3 = new Resume(UUID_3, NAME_3);
 
     private static final Resume RESUME_1 = ResumeTestData.RESUME_1;
     private static final Resume RESUME_2 = ResumeTestData.RESUME_2;
@@ -85,10 +77,12 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() throws IOException {
+    public void getAllSorted() throws IOException {
         List<Resume> list = storage.getAllSorted();
         Assert.assertEquals(3, list.size());
-        Assert.assertEquals(list, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
+        List<Resume> listComparison = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        Collections.sort(listComparison);
+        Assert.assertEquals(list, listComparison);
     }
 
     @Test
