@@ -3,8 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +32,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume resume, File file) {
         try {
-            doWrite(resume, file);
+            doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Update error", file.getName(), e);
         }
@@ -51,7 +50,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume doGet(File file) throws IOException {
-        return doRead(file);
+        return doRead(new BufferedInputStream(new FileInputStream(file)));
     }
 
     @Override
@@ -100,7 +99,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         }
     }
 
-    abstract void doWrite(Resume resume, File file) throws IOException;
+    abstract void doWrite(Resume resume, OutputStream file) throws IOException;
 
-    abstract Resume doRead(File file) throws IOException;
+    abstract Resume doRead(InputStream file) throws IOException;
 }
