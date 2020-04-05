@@ -31,19 +31,19 @@ public class MainFile {
         File rootDir = new File("C:\\Users\\flenn\\basejava");
         File[] listRoot = rootDir.listFiles();
         assert listRoot != null;
-        recursionRound(rootDir);
+        recursionRound(rootDir, "");
 
     }
 
-    private static void recursionRound(File file) {
+    private static void recursionRound(File file, String indentation) {
         File[] list = file.listFiles();
         if (list != null) {
             for (File name : list) {
                 if (name.isDirectory()) {
-                    System.out.println("Directory: " + name.getName());
-                    recursionRound(name);
+                    System.out.println(indentation + "Directory: " + name.getName());
+                    recursionRound(name, indentation + " ");
                 } else {
-                    System.out.println("File: " + name.getName());
+                    System.out.println(indentation + "File: " + name.getName());
                 }
             }
         } else {
