@@ -2,10 +2,13 @@ package com.urise.webapp.model;
 
 import com.urise.webapp.util.DataUtil;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class OrganizationPeriod {
+public class OrganizationPeriod implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private LocalDate startDate;
     private LocalDate endDate;
     private String title;

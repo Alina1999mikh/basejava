@@ -34,7 +34,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     }
 
     @Override
-    public void delete(String uuid) {
+    public void delete(String uuid) throws IOException {
         LOG.info("Delete: "+uuid);
         SK searchKey = getExistedSearchKey(uuid);
         doDelete(searchKey);
@@ -76,7 +76,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract Resume doGet(SK searchKey) throws IOException;
 
-    protected abstract void doDelete(SK searchKey);
+    protected abstract void doDelete(SK searchKey) throws IOException;
 
     protected abstract SK findSearchKey(String uuid);
 

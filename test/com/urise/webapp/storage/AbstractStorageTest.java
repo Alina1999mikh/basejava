@@ -7,12 +7,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
+    static final File STORAGE_DIR = new File("C:\\Users\\flenn\\basejava\\src\\com\\urise\\webapp\\storageResume");
+
     Storage storage;
 
     private static final Resume RESUME_1 = ResumeTestData.RESUME_1;
@@ -32,7 +35,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void clear() {
+    public void clear() throws IOException {
         storage.clear();
         assertSize(0);
     }
@@ -41,7 +44,7 @@ public abstract class AbstractStorageTest {
     public void update() throws IOException {
         Resume newResume = new Resume(RESUME_1.getUuid(), "testName");
         storage.update(newResume);
-        Assert.assertSame(newResume, storage.get(RESUME_1.getUuid()));
+        Assert.assertEquals(newResume, storage.get(RESUME_1.getUuid()));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -72,7 +75,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void deleteNotExist() {
+    public void deleteNotExist() throws IOException {
         storage.delete("itIsNotExist");
     }
 
@@ -86,7 +89,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void size() {
+    public void size() throws IOException {
         assertSize(3);
     }
 
@@ -102,7 +105,7 @@ public abstract class AbstractStorageTest {
         storage.get("itIsNotExist");
     }
 
-    private void assertSize(int size) {
+    private void assertSize(int size) throws IOException {
         Assert.assertEquals(size, storage.size());
     }
 

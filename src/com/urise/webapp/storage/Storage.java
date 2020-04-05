@@ -15,9 +15,9 @@ public interface Storage {
 
     Resume get(String uuid) throws IOException;
 
-    void delete(String uuid);
+    void delete(String uuid) throws IOException;
 
-    int size();
+    int size() throws IOException;
 
     List<Resume> getAllSorted() throws IOException;
 }
