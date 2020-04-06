@@ -3,7 +3,9 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,12 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
 
-    AbstractPathStorage(String dir) {
+    private Strategy strategy;
+
+    PathStorage(String dir, Strategy strategy) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory can't be null");
+        this.strategy = strategy;
         if (!Files.isDirectory(directory)) {
             throw new IllegalArgumentException(dir + "is not directory");
         }
@@ -34,7 +39,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume resume, Path file) {
         try {
-            doWrite(resume, new BufferedOutputStream(Files.newOutputStream(file)));
+            strategy.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Update error", file.getFileName().toString(), e);
         }
@@ -52,7 +57,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     @Override
     protected Resume doGet(Path file) throws IOException {
-        return doRead(new BufferedInputStream(Files.newInputStream(file)));
+        return strategy.doRead(new BufferedInputStream(Files.newInputStream(file)));
     }
 
     @Override
@@ -96,9 +101,4 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     public int size() throws IOException {
         return (int) Files.list(directory).count();
     }
-
-    abstract void doWrite(Resume resume, OutputStream file) throws IOException;
-
-
-    abstract Resume doRead(InputStream file) throws IOException;
 }
