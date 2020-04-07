@@ -4,7 +4,6 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -20,28 +19,28 @@ public abstract class AbstractStorage<SK> implements Storage {
     }
 
     @Override
-    public void save(Resume resume) throws IOException {
+    public void save(Resume resume) {
         LOG.info("Save: "+resume);
         SK searchKey = getNotExistedSearchKey(resume.getUuid());
         doSave(resume, searchKey);
     }
 
     @Override
-    public Resume get(String uuid) throws IOException {
+    public Resume get(String uuid) {
         LOG.info("Get: "+uuid);
         SK index = getExistedSearchKey(uuid);
         return doGet(index);
     }
 
     @Override
-    public void delete(String uuid) throws IOException {
+    public void delete(String uuid) {
         LOG.info("Delete: "+uuid);
         SK searchKey = getExistedSearchKey(uuid);
         doDelete(searchKey);
     }
 
     @Override
-    public List<Resume> getAllSorted() throws IOException {
+    public List<Resume> getAllSorted() {
         List<Resume> listStorage = getAll();
         Collections.sort(listStorage);
         LOG.info("Get all: "+listStorage);
@@ -72,13 +71,13 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void doUpdate(Resume resume, SK searchKey);
 
-    protected abstract void doSave(Resume resume, SK searchKey) throws IOException;
+    protected abstract void doSave(Resume resume, SK searchKey);
 
-    protected abstract Resume doGet(SK searchKey) throws IOException;
+    protected abstract Resume doGet(SK searchKey);
 
-    protected abstract void doDelete(SK searchKey) throws IOException;
+    protected abstract void doDelete(SK searchKey);
 
     protected abstract SK findSearchKey(String uuid);
 
-    protected abstract List<Resume> getAll() throws IOException;
+    protected abstract List<Resume> getAll();
 }

@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
@@ -19,8 +20,8 @@ public class PathStorage extends AbstractStorage<Path> {
     private Strategy strategy;
 
     PathStorage(String dir, Strategy strategy) {
+        Objects.requireNonNull(dir, "directory can't be null");
         directory = Paths.get(dir);
-        Objects.requireNonNull(directory, "directory can't be null");
         this.strategy = strategy;
         if (!Files.isDirectory(directory)) {
             throw new IllegalArgumentException(dir + "is not directory");
@@ -33,7 +34,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected boolean isExist(Path file) {
-        return Files.exists(file);
+        return Files.isRegularFile(file);
     }
 
     @Override
@@ -56,8 +57,12 @@ public class PathStorage extends AbstractStorage<Path> {
     }
 
     @Override
-    protected Resume doGet(Path file) throws IOException {
-        return strategy.doRead(new BufferedInputStream(Files.newInputStream(file)));
+    protected Resume doGet(Path file) {
+        try {
+            return strategy.doRead(new BufferedInputStream(Files.newInputStream(file)));
+        } catch (IOException e) {
+            throw new StorageException("Get error", file.getFileName().toString(), e);
+        }
     }
 
     @Override
@@ -76,16 +81,13 @@ public class PathStorage extends AbstractStorage<Path> {
 
 
     @Override
-    protected List<Resume> getAll() throws IOException {
-        List<Resume> resumes = new ArrayList<>();
-        Files.list(directory).forEach(path -> {
-            try {
-                resumes.add(doGet(path));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        return resumes;
+    protected List<Resume> getAll() {
+        try {
+            List<Resume> resumes = new ArrayList<>();
+            return Files.list(directory).map(this::doGet).collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new StorageException("Get all error!", directory.getFileName().toString(), e);
+        }
     }
 
     @Override
@@ -98,7 +100,11 @@ public class PathStorage extends AbstractStorage<Path> {
     }
 
     @Override
-    public int size() throws IOException {
-        return (int) Files.list(directory).count();
+    public int size() {
+        try {
+            return (int) Files.list(directory).count();
+        } catch (IOException e) {
+            throw new StorageException("Size error", directory.getFileName().toString(), e);
+        }
     }
 }

@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class FileStorage extends AbstractStorage<File> {
 
@@ -14,7 +15,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     private Strategy strategy;
 
-    protected FileStorage(File directory, Strategy strategy) {
+    FileStorage(File directory, Strategy strategy) {
         Objects.requireNonNull(directory, "directory can't be null");
         this.strategy = strategy;
         if (!directory.isDirectory()) {
@@ -52,8 +53,12 @@ public class FileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected Resume doGet(File file) throws IOException {
-        return strategy.doRead(new BufferedInputStream(new FileInputStream(file)));
+    protected Resume doGet(File file) {
+        try {
+            return strategy.doRead(new BufferedInputStream(new FileInputStream(file)));
+        } catch (IOException e) {
+            throw new StorageException("Get error", file.getName(), e);
+        }
     }
 
     @Override
@@ -67,36 +72,36 @@ public class FileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected List<Resume> getAll() throws IOException {
+    protected List<Resume> getAll() {
         List<Resume> resumes = new ArrayList<>();
-        File[] list = directory.listFiles();
-        if (list != null) {
-            for (File file : list) {
+        each(files -> {
+            for (File file : files) {
                 resumes.add(doGet(file));
             }
-        } else {
-            throw new StorageException("Directory is null!", directory.getName());
-        }
+            return files;
+        });
         return resumes;
     }
 
     @Override
     public void clear() {
-        File[] list = directory.listFiles();
-        if (list != null) {
-            for (File file : list) {
+        each(files -> {
+            for (File file : files) {
                 doDelete(file);
             }
-        } else {
-            throw new StorageException("Directory is null!", directory.getName());
-        }
+            return files;
+        });
     }
 
     @Override
     public int size() {
-        String[] list = directory.list();
+        return each(files -> files.length);
+    }
+
+    private <T> T each(Function<File[], T> func) {
+        File[] list = directory.listFiles();
         if (list != null) {
-            return list.length;
+            return func.apply(list);
         } else {
             throw new StorageException("Directory is null!", directory.getName());
         }
