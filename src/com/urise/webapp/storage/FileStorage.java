@@ -7,7 +7,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 public class FileStorage extends AbstractStorage<File> {
 
@@ -74,34 +73,31 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected List<Resume> getAll() {
         List<Resume> resumes = new ArrayList<>();
-        each(files -> {
-            for (File file : files) {
-                resumes.add(doGet(file));
-            }
-            return files;
-        });
+        File[] list = getFiles();
+        for (File file : list) {
+            resumes.add(doGet(file));
+        }
         return resumes;
     }
 
     @Override
     public void clear() {
-        each(files -> {
-            for (File file : files) {
-                doDelete(file);
-            }
-            return files;
-        });
+        File[] list = getFiles();
+        for (File file : list) {
+            doDelete(file);
+        }
     }
 
     @Override
     public int size() {
-        return each(files -> files.length);
+        File[] list = getFiles();
+        return list.length;
     }
 
-    private <T> T each(Function<File[], T> func) {
+    private File[] getFiles() {
         File[] list = directory.listFiles();
         if (list != null) {
-            return func.apply(list);
+            return list;
         } else {
             throw new StorageException("Directory is null!", directory.getName());
         }
