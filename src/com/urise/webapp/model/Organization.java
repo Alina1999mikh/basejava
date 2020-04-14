@@ -1,19 +1,26 @@
 package com.urise.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Link homePage;
-    private final List<OrganizationPeriod> organizationPeriod;
+    private List<OrganizationPeriod> organizationPeriod;
 
     public Organization(String name, String url, List<OrganizationPeriod> organizationPeriod) {
         Objects.requireNonNull(name, "Name can't be NULL!");
         this.homePage = new Link(name, url);
         this.organizationPeriod = organizationPeriod;
+    }
+
+    public Organization() {
     }
 
     @Override

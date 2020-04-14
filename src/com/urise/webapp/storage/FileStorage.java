@@ -2,6 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.serializer.StreamSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,11 +13,11 @@ public class FileStorage extends AbstractStorage<File> {
 
     private File directory;
 
-    private Strategy strategy;
+    private StreamSerializer streamSerializer;
 
-    FileStorage(File directory, Strategy strategy) {
+    FileStorage(File directory, StreamSerializer streamSerializer) {
         Objects.requireNonNull(directory, "directory can't be null");
-        this.strategy = strategy;
+        this.streamSerializer = streamSerializer;
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + "is not directory");
         }
@@ -35,7 +36,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume resume, File file) {
         try {
-            strategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            streamSerializer.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Update error", file.getName(), e);
         }
@@ -54,7 +55,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return strategy.doRead(new BufferedInputStream(new FileInputStream(file)));
+            return streamSerializer.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("Get error", file.getName(), e);
         }

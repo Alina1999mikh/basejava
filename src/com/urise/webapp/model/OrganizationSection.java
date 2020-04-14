@@ -1,18 +1,25 @@
 package com.urise.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 
 public class OrganizationSection extends Section implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final List<Organization> organizations;
+    private List<Organization> organizations;
 
     public OrganizationSection(List<Organization> organization) {
         Objects.requireNonNull(organization, "Organization can't be NULL!");
         this.organizations = organization;
+    }
+
+    public OrganizationSection() {
     }
 
     @Override

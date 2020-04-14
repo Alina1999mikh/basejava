@@ -1,15 +1,22 @@
 package com.urise.webapp.model;
 
-import com.urise.webapp.util.DataUtil;
+import com.urise.webapp.storage.util.DataUtil;
+import com.urise.webapp.storage.util.LocalDateAdapter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OrganizationPeriod implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate startDate;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate endDate;
     private String title;
     private String text;
@@ -22,13 +29,16 @@ public class OrganizationPeriod implements Serializable {
         this.text = text;
     }
 
-    public OrganizationPeriod(int startDateYear,int startDateMonth, LocalDate endDateNow, String title, String text) {
+    public OrganizationPeriod(int startDateYear, int startDateMonth, LocalDate endDateNow, String title, String text) {
         Objects.requireNonNull(title, "Title can't be NULL!");
         this.startDate = DataUtil.of(startDateYear,startDateMonth);
         Objects.requireNonNull(endDateNow, "End date can't be NULL!");
         this.endDate = endDateNow;
         this.title = title;
         this.text = text;
+    }
+
+    public OrganizationPeriod() {
     }
 
     public LocalDate getStartDate() {
