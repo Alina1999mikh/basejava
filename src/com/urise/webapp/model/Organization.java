@@ -15,12 +15,19 @@ public class Organization implements Serializable {
     private List<OrganizationPeriod> organizationPeriod;
 
     public Organization(String name, String url, List<OrganizationPeriod> organizationPeriod) {
-        Objects.requireNonNull(name, "Name can't be NULL!");
         this.homePage = new Link(name, url);
         this.organizationPeriod = organizationPeriod;
     }
 
     public Organization() {
+    }
+
+    public List<OrganizationPeriod> getOrganizationPeriod() {
+        return organizationPeriod;
+    }
+
+    public Link getHomePage() {
+        return homePage;
     }
 
     @Override

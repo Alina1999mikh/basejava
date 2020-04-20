@@ -33,9 +33,8 @@ public class ResumeTestData {
         RESUME_1.setContacts(ContactType.GITHUB, "https://github.com/gkislin");
         RESUME_1.setContacts(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473/grigory-kislin");
         RESUME_1.setContacts(ContactType.HOME, "http://gkislin.ru/");
-
-        RESUME_1.setSections(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
-        RESUME_1.setSections(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
+      /*  RESUME_1.setSections(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
+        RESUME_1.setSections(SectionType.PERSONAL, new TextSection("Аналитичский склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
         RESUME_1.setSections(SectionType.ACHIEVEMENT, new ListSection(Arrays.asList("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
                 "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.",
                 "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.",
@@ -58,6 +57,7 @@ public class ResumeTestData {
                 "Отличное знание и опыт применения концепций ООП, SOA, шаблонов",
                 "проектрирования, архитектурных шаблонов, UML, функционального программирования",
                 "Родной русский, английский \"upper intermediate\"")));
+      */
         RESUME_1.setSections(SectionType.EXPERIENCE, new OrganizationSection(Arrays.asList(new Organization("Java Online Projects", "http://javaops.ru/",
                         Collections.singletonList(new OrganizationPeriod(2013, 10, LocalDate.now(), "Автор проекта.",
                                 "Создание, организация и проведение Java онлайн проектов и стажировок."))),
@@ -100,5 +100,18 @@ public class ResumeTestData {
                                         "Инженер (программист Fortran, C)", null))),
                 new Organization("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/", Collections.singletonList(new OrganizationPeriod(1984, 9,
                         1987, 1, "Закончил с отличием", null))))));
+//        RESUME_2.setContacts(ContactType.GITHUB, "https://github.com/gkislin");
+//        RESUME_2.setContacts(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473/grigory-kislin");
+//        RESUME_2.setSections(SectionType.EXPERIENCE, new OrganizationSection(Arrays.asList(new Organization("Java Online Projects", "http://javaops.ru/",
+//                        Collections.singletonList(new OrganizationPeriod(2013, 10, LocalDate.now(), "Автор проекта.",
+//                                "Создание, организация и проведение Java онлайн проектов и стажировок."))),
+//
+//                new Organization("Wrike", "https://www.wrike.com/", Collections.singletonList(new OrganizationPeriod(2014, 10,
+//                        2016, 1, "Старший разработчик (backend)",
+//                        "test text"))), new Organization("RIT Center", null, Collections.singletonList(new OrganizationPeriod(2012, 4,
+//                        2014, 10, "Java архитектор",
+//                        "test text"))))));
+//
+//        RESUME_3.setContacts(ContactType.HOME, "http://gkislin.ru/");
     }
 }

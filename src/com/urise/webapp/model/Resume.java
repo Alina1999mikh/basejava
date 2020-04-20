@@ -60,11 +60,18 @@ public class Resume implements Comparable<Resume>, Serializable {
         this.sections.put(type, section);
     }
 
-    @Override
-    public String toString() {
-        return ("Name: " + fullName + " Uuid: " + uuid);
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
     }
 
+    public void addSection(SectionType type, Section section) {
+        sections.put(type, section);
+    }
+
+    @Override
+    public String toString() {
+        return ("Name: " + fullName + "\nUuid: " + uuid + "\ncontacts " + contacts + "\nsection " + sections);
+    }
 
     @Override
     public boolean equals(Object o) {

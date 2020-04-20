@@ -26,7 +26,7 @@ public class XmlParser {
         }
     }
 
-    public <T> T unmarshall(Reader reader) {
+    public <T> T unmarshal(Reader reader) {
         try {
             return (T) unmarshaller.unmarshal(reader);
         } catch (JAXBException e) {
@@ -34,7 +34,7 @@ public class XmlParser {
         }
     }
 
-    public void marshall(Object instance, Writer writer) {
+    public void marshal(Object instance, Writer writer) {
         try {
             marshaller.marshal(instance, writer);
         } catch (JAXBException e) {

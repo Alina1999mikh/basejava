@@ -13,6 +13,7 @@ public class Link implements Serializable {
     private String url;
 
     Link(String name, String url) {
+        Objects.requireNonNull(name, "Name can't be NULL!");
         this.name = name;
         this.url = url;
     }

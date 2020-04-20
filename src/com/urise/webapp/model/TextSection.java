@@ -13,6 +13,10 @@ public class TextSection extends Section implements Serializable {
         this.text = text;
     }
 
+    public String getText() {
+        return text;
+    }
+
     public TextSection() {
     }
 
