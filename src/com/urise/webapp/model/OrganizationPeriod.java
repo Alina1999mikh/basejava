@@ -33,7 +33,7 @@ public class OrganizationPeriod implements Serializable {
         Objects.requireNonNull(title, "Title can't be NULL!");
         this.startDate = DataUtil.of(startDateYear,startDateMonth);
         Objects.requireNonNull(endDateNow, "End date can't be NULL!");
-        this.endDate = endDateNow;
+        this.endDate = DataUtil.of(endDateNow.getYear(), endDateNow.getMonthValue());
         this.title = title;
         this.text = text;
     }

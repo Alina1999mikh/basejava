@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class DataStreamSerializer implements StreamSerializer {
     @Override
@@ -128,25 +129,23 @@ public class DataStreamSerializer implements StreamSerializer {
                 }
                 return new OrganizationSection(listOrg);
 
-
             default:
                 throw new IllegalStateException();
         }
     }
 
-    private void writeLocalDate(DataOutputStream dos, LocalDate startDate) throws IOException {
-        dos.writeInt(startDate.getYear());
-        dos.writeInt(startDate.getMonth().getValue());
+    private void writeLocalDate(DataOutputStream dos, LocalDate date) throws IOException {
+        dos.writeInt(date.getYear());
+        dos.writeInt(date.getMonth().getValue());
     }
 
     private String transformNullString(String text) {
+
         if (text.equals("null")) return null;
         else return text;
     }
 
     private void writeNullString(DataOutputStream dos, String string) throws IOException {
-        if (string != null)
-            dos.writeUTF(string);
-        else dos.writeUTF("null");
+        dos.writeUTF(Objects.requireNonNullElse(string, "null"));
     }
 }
