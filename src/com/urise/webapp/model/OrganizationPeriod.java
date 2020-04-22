@@ -38,6 +38,13 @@ public class OrganizationPeriod implements Serializable {
         this.text = text;
     }
 
+    public OrganizationPeriod(LocalDate startDate, LocalDate endDate, String title, String text) {
+        Objects.requireNonNull(title, "Title can't be NULL!");
+        this.startDate = DataUtil.of(startDate.getYear(), startDate.getMonthValue());
+        this.endDate = DataUtil.of(endDate.getYear(), endDate.getMonthValue());
+        this.title = title;
+        this.text = text;
+    }
     public OrganizationPeriod() {
     }
 

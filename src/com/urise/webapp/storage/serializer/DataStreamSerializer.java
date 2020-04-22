@@ -1,35 +1,31 @@
 package com.urise.webapp.storage.serializer;
 
 import com.urise.webapp.model.*;
+import com.urise.webapp.storage.util.DataUtil;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class DataStreamSerializer implements StreamSerializer {
+
     @Override
     public void doWrite(Resume resume, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
-            Map<ContactType, String> contact = resume.getContacts();
-            dos.writeInt(contact.size());
-            for (Map.Entry<ContactType, String> entry : contact.entrySet()) {
+            Map<ContactType, String> contacts = resume.getContacts();
+            writeCollection(dos, contacts.entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
+            });
 
-            Map<SectionType, Section> section = resume.getSections();
-            dos.writeInt(section.size());
-            for (Map.Entry<SectionType, Section> entry : section.entrySet()) {
+            writeCollection(dos, resume.getSections().entrySet(), entry -> {
                 SectionType type = entry.getKey();
                 dos.writeUTF(type.name());
                 Section value = entry.getValue();
                 writeSection(dos, type, value);
-            }
+            });
         }
     }
 
@@ -65,69 +61,24 @@ public class DataStreamSerializer implements StreamSerializer {
 
             case QUALIFICATIONS:
                 List<String> collection = ((ListSection) value).getItems();
-                dos.writeInt(collection.size());
-                for (String i : collection) {
-                    dos.writeUTF(i);
-                }
+                writeCollection(dos, collection, dos::writeUTF);
                 break;
 
             case EXPERIENCE:
 
             case EDUCATION:
-                int sizeOrganization = ((OrganizationSection) value).getOrganizations().size();
-                dos.writeInt(sizeOrganization);
-                for (Organization organization : ((OrganizationSection) value).getOrganizations()) {
+                writeCollection(dos, ((OrganizationSection) value).getOrganizations(), organization ->
+                {
                     dos.writeUTF(organization.getHomePage().getName());
                     writeNullString(dos, organization.getHomePage().getUrl());
-                    List<OrganizationPeriod> collectionPeriod = organization.getOrganizationPeriod();
-                    dos.writeInt(collectionPeriod.size());
-                    for (OrganizationPeriod period : collectionPeriod) {
+                    writeCollection(dos, organization.getOrganizationPeriod(), period -> {
                         writeLocalDate(dos, period.getStartDate());
                         writeLocalDate(dos, period.getEndDate());
                         dos.writeUTF(period.getTitle());
                         writeNullString(dos, period.getText());
-                    }
-                }
+                    });
+                });
                 break;
-
-            default:
-                throw new IllegalStateException();
-        }
-    }
-
-    private Section readSection(SectionType type, DataInputStream dis) throws IOException {
-        switch (type) {
-            case PERSONAL:
-
-            case OBJECTIVE:
-                return new TextSection(dis.readUTF());
-
-            case ACHIEVEMENT:
-
-            case QUALIFICATIONS:
-                int size = dis.readInt();
-                List<String> list = new ArrayList<>(size);
-                for (int i = 0; i < size; i++) {
-                    list.add(dis.readUTF());
-                }
-                return new ListSection(list);
-
-            case EXPERIENCE:
-
-            case EDUCATION:
-                int sizeOrganization = dis.readInt();
-                List<Organization> listOrg = new ArrayList<>(sizeOrganization);
-                for (int i = 0; i < sizeOrganization; i++) {
-                    String name = dis.readUTF();
-                    String url = transformNullString(dis.readUTF());
-                    int sizePeriod = dis.readInt();
-                    List<OrganizationPeriod> organizationPeriods = new ArrayList<>(sizePeriod);
-                    for (int j = 0; j < sizePeriod; j++) {
-                        organizationPeriods.add(new OrganizationPeriod(dis.readInt(), dis.readInt(), dis.readInt(), dis.readInt(), dis.readUTF(), transformNullString(dis.readUTF())));
-                    }
-                    listOrg.add(new Organization(name, url, organizationPeriods));
-                }
-                return new OrganizationSection(listOrg);
 
             default:
                 throw new IllegalStateException();
@@ -140,12 +91,68 @@ public class DataStreamSerializer implements StreamSerializer {
     }
 
     private String transformNullString(String text) {
-
-        if (text.equals("null")) return null;
+        if (text.equals("")) return null;
         else return text;
     }
 
     private void writeNullString(DataOutputStream dos, String string) throws IOException {
-        dos.writeUTF(Objects.requireNonNullElse(string, "null"));
+        dos.writeUTF(Objects.requireNonNullElse(string, ""));
+    }
+
+    private <T> void writeCollection(DataOutputStream dos, Collection<T> collection, WriteItem<T> writer) throws IOException {
+        dos.writeInt(collection.size());
+        for (T item : collection) {
+            writer.write(item);
+        }
+    }
+
+    @FunctionalInterface
+    private interface WriteItem<T> {
+        void write(T t) throws IOException;
+    }
+
+    private Section readSection(SectionType type, DataInputStream dis) throws IOException {
+        switch (type) {
+            case PERSONAL:
+
+            case OBJECTIVE:
+                return new TextSection(dis.readUTF());
+
+            case ACHIEVEMENT:
+
+            case QUALIFICATIONS:
+                return new ListSection(readList(dis, dis::readUTF));
+
+            case EXPERIENCE:
+
+            case EDUCATION:
+                return new OrganizationSection(
+                        readList(dis, () -> new Organization(
+                                dis.readUTF(), transformNullString(dis.readUTF()),
+                                readList(dis, () -> new OrganizationPeriod(
+                                        readLocalDate(dis), readLocalDate(dis), dis.readUTF(), transformNullString(dis.readUTF())
+                                )))));
+
+            default:
+                throw new IllegalStateException();
+        }
+    }
+
+    private LocalDate readLocalDate(DataInputStream dis) throws IOException {
+        return DataUtil.of(dis.readInt(), dis.readInt());
+    }
+
+    private <T> List<T> readList(DataInputStream dis, ReadItem<T> reader) throws IOException {
+        int size = dis.readInt();
+        List<T> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(reader.read());
+        }
+        return list;
+    }
+
+    @FunctionalInterface
+    private interface ReadItem<T> {
+        T read() throws IOException;
     }
 }
