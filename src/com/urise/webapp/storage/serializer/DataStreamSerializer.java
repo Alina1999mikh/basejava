@@ -35,16 +35,11 @@ public class DataStreamSerializer implements StreamSerializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int sizeContact = dis.readInt();
-            for (int i = 0; i < sizeContact; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-
-            int sizeSection = dis.readInt();
-            for (int i = 0; i < sizeSection; i++) {
-                SectionType type = SectionType.valueOf(dis.readUTF());
-                resume.addSection(type, readSection(type, dis));
-            }
+            readItems(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readItems(dis, () -> {
+                SectionType sectionType = SectionType.valueOf(dis.readUTF());
+                resume.addSection(sectionType, readSection(dis, sectionType));
+            });
             return resume;
         }
     }
@@ -111,7 +106,7 @@ public class DataStreamSerializer implements StreamSerializer {
         void write(T t) throws IOException;
     }
 
-    private Section readSection(SectionType type, DataInputStream dis) throws IOException {
+    private Section readSection(DataInputStream dis, SectionType type) throws IOException {
         switch (type) {
             case PERSONAL:
 
@@ -142,7 +137,12 @@ public class DataStreamSerializer implements StreamSerializer {
         return DataUtil.of(dis.readInt(), dis.readInt());
     }
 
-    private <T> List<T> readList(DataInputStream dis, ReadItem<T> reader) throws IOException {
+    @FunctionalInterface
+    private interface ElementReader<T> {
+        T read() throws IOException;
+    }
+
+    private <T> List<T> readList(DataInputStream dis, ElementReader<T> reader) throws IOException {
         int size = dis.readInt();
         List<T> list = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
@@ -152,7 +152,14 @@ public class DataStreamSerializer implements StreamSerializer {
     }
 
     @FunctionalInterface
-    private interface ReadItem<T> {
-        T read() throws IOException;
+    private interface ElementProcessor {
+        void process() throws IOException;
+    }
+
+    private void readItems(DataInputStream dis, ElementProcessor processor) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            processor.process();
+        }
     }
 }
