@@ -58,6 +58,10 @@ public class MainConcurrency {
             }
         });
         System.out.println(counter);
+        final String lock1 = "name1";
+        final String lock2 = "name2";
+        deadLock(lock1, lock2);
+        deadLock(lock2, lock1);
     }
 
     private static final Object LOCK = new Object();
@@ -72,5 +76,23 @@ public class MainConcurrency {
 //            e.printStackTrace();
 //        }
         counter++;
+    }
+
+    private static void deadLock(Object lock1, Object lock2) {
+        new Thread(() -> {
+            System.out.println("Wait " + lock1);
+            synchronized (lock1) {
+                System.out.println("Name: " + lock1);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Wait " + lock2);
+                synchronized (lock2) {
+                    System.out.println("Name " + lock2);
+                }
+            }
+        }).start();
     }
 }
