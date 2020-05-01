@@ -103,7 +103,7 @@ public class MainConcurrency {
         }).start();
     }
 
-    static int minValue(int[] values) {
+    private static int minValue(int[] values) {
         return IntStream.of(values)
                 .boxed()
                 // .allMatch(number->((number<=9)&&(number>=0))
@@ -128,7 +128,7 @@ public class MainConcurrency {
                 .sum();
     }
 
-    static List<Integer> oddOrEven(List<Integer> integers) {
+    private static List<Integer> oddOrEven(List<Integer> integers) {
         Map<Boolean, List<Integer>> map = integers.stream()
                 .collect(Collectors.partitioningBy(x -> x % 2 == 0));
         return map.get(map.get(false).size() % 2 != 0);
