@@ -1,7 +1,8 @@
 package com.urise.webapp;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class MainConcurrency {
     private static final int THREAD_NUMBER = 10000;
@@ -58,10 +59,16 @@ public class MainConcurrency {
             }
         });
         System.out.println(counter);
-        final String lock1 = "name1";
-        final String lock2 = "name2";
-        deadLock(lock1, lock2);
-        deadLock(lock2, lock1);
+//        final String lock1 = "name1";
+//        final String lock2 = "name2";
+//        deadLock(lock1, lock2);
+//        deadLock(lock2, lock1);
+
+        int[] massive = {3, 4, 5, 4};
+        System.out.println(minValue(massive));
+
+        System.out.println(oddOrEven(Arrays.asList(1, 2, 3, 4, 5)));
+        System.out.println(oddOrEven(Arrays.asList(1, 2, 3, 4, 5, -1)));
     }
 
     private static final Object LOCK = new Object();
@@ -95,4 +102,37 @@ public class MainConcurrency {
             }
         }).start();
     }
+
+    static int minValue(int[] values) {
+        return IntStream.of(values)
+                .boxed()
+                // .allMatch(number->((number<=9)&&(number>=0))
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .sequential()
+                .reduce(
+                        new TreeMap<Integer, Integer>(),
+                        (r, v) -> {
+                            System.out.print(r);
+                            System.out.println(" " + v);
+                            r.put(r.size(), v);
+                            return r;
+                        },
+                        (r1, r2) -> {
+                            throw new UnsupportedOperationException("Stream should be sequential");
+                        }
+                )
+                .entrySet()
+                .stream()
+                .mapToInt(e -> (int) (e.getValue() * (Math.pow(10, e.getKey()))))
+                .sum();
+    }
+
+    static List<Integer> oddOrEven(List<Integer> integers) {
+        Map<Boolean, List<Integer>> map = integers.stream()
+                .collect(Collectors.partitioningBy(x -> x % 2 == 0));
+        return map.get(map.get(false).size() % 2 != 0);
+
+    }
+
 }
