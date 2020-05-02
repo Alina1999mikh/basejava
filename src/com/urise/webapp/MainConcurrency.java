@@ -1,6 +1,9 @@
 package com.urise.webapp;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -63,12 +66,17 @@ public class MainConcurrency {
 //        final String lock2 = "name2";
 //        deadLock(lock1, lock2);
 //        deadLock(lock2, lock1);
-
+        System.out.println("\nmin value");
         int[] massive = {3, 4, 5, 4};
         System.out.println(minValue(massive));
+        int[] massive2 = {};
+        System.out.println(minValue(massive2));
 
+        System.out.println("\nodd or even");
         System.out.println(oddOrEven(Arrays.asList(1, 2, 3, 4, 5)));
-        System.out.println(oddOrEven(Arrays.asList(1, 2, 3, 4, 5, -1)));
+        System.out.println(oddOrEven(Arrays.asList(1, 2, 3, 4, 5)));
+
+        System.out.println(oddOrEven(Arrays.asList(1, 2, 3, 4, 5, 7)));
     }
 
     private static final Object LOCK = new Object();
@@ -103,36 +111,40 @@ public class MainConcurrency {
         }).start();
     }
 
-    private static int minValue(int[] values) {
+    private static Integer minValue(int[] values) {
+//        return IntStream.of(values)
+//                .boxed()
+//                // .allMatch(number->((number<=9)&&(number>=0))
+//                .distinct()
+//                .sorted(Comparator.reverseOrder())
+//                .sequential()
+//                .reduce(
+//                        new TreeMap<Integer, Integer>(),
+//                        (r, v) -> {
+//                            System.out.print(r);
+//                            System.out.println(" " + v);
+//                            r.put(r.size(), v);
+//                            return r;
+//                        },
+//                        (r1, r2) -> {
+//                            throw new UnsupportedOperationException("Stream should be sequential");
+//                        }
+//                )
+//                .entrySet()
+//                .stream()
+//                .mapToInt(e -> (int) (e.getValue() * (Math.pow(10, e.getKey()))))
+//                .sum();
         return IntStream.of(values)
                 .boxed()
-                // .allMatch(number->((number<=9)&&(number>=0))
                 .distinct()
-                .sorted(Comparator.reverseOrder())
-                .sequential()
-                .reduce(
-                        new TreeMap<Integer, Integer>(),
-                        (r, v) -> {
-                            System.out.print(r);
-                            System.out.println(" " + v);
-                            r.put(r.size(), v);
-                            return r;
-                        },
-                        (r1, r2) -> {
-                            throw new UnsupportedOperationException("Stream should be sequential");
-                        }
-                )
-                .entrySet()
-                .stream()
-                .mapToInt(e -> (int) (e.getValue() * (Math.pow(10, e.getKey()))))
-                .sum();
+                .sorted()
+                .reduce((left, next) -> (left * 10 + next))
+                .orElse(0);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
         Map<Boolean, List<Integer>> map = integers.stream()
                 .collect(Collectors.partitioningBy(x -> x % 2 == 0));
         return map.get(map.get(false).size() % 2 != 0);
-
     }
-
 }
