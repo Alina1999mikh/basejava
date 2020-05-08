@@ -1,9 +1,14 @@
 package com.urise.webapp;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -41,18 +46,32 @@ public class MainConcurrency {
 
         final MainConcurrency mainConcurrency = new MainConcurrency();
         List<Thread> threads = new ArrayList<>(THREAD_NUMBER);
+        CountDownLatch latch = new CountDownLatch(THREAD_NUMBER);
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        CompletionService completionService = new ExecutorCompletionService(executorService);
 
-        new Thread(() -> System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState())).start();
-        System.out.println(thread1.getState());
+
+//        new Thread(() -> System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState())).start();
+//        System.out.println(thread1.getState());
         for (int i = 0; i < THREAD_NUMBER; i++) {
-            Thread thread = new Thread(() -> {
+            Future<Integer> future = executorService.submit(() ->
+                    //Thread thread = new Thread(() -> {
+            {
                 for (int j = 0; j < 100; j++) {
                     mainConcurrency.inc();
                 }
+                latch.countDown();
+                return 5;
             });
-            thread.start();
-            threads.add(thread);
+            completionService.poll();
+//            thread.start();
+//            threads.add(thread);
         }
+
+        latch.await(10, TimeUnit.SECONDS);
+        executorService.shutdown();
+        System.out.println(counter);
+
         System.out.println(threads.size());
         threads.forEach(t -> {
             try {
@@ -80,17 +99,34 @@ public class MainConcurrency {
     }
 
     private static final Object LOCK = new Object();
+    private final AtomicInteger atomicCounter = new AtomicInteger();
 
-    private synchronized void inc() {
-//         try {
-//            synchronized (this) {
-//                counter++;
-//                wait();                ///
-//            }
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
+    //    private static final Object LOCK = new Object();
+//    private static final Lock lock = new ReentrantLock();
+    private static final ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
+    private static final Lock WRITE_LOCK = reentrantReadWriteLock.writeLock();
+    private static final Lock READ_LOCK = reentrantReadWriteLock.readLock();
+    private static final ThreadLocal<SimpleDateFormat> threadLocal = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat();
+        }
+    };
+
+    private void inc() {
+//        synchronized (this) {	//        synchronized (this) {
+//        synchronized (MainConcurrency.class) {	//        synchronized (MainConcurrency.class) {
+        counter++;    //        WRITE_LOCK.lock();
+//        try {
+        atomicCounter.incrementAndGet();
+//            counter++;
+//        } finally {
+//            WRITE_LOCK.unlock();
 //        }
-        counter++;
+//                wait();	//                wait();
+//                readFile	//                readFile
+//                ...	//                ...
+//        }	//        }
     }
 
     private static void deadLock(Object lock1, Object lock2) {
