@@ -1,10 +1,6 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.model.*;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
+import com.urise.webapp.model.Resume;
 
 public class ResumeTestData {
     private Storage storage;
@@ -26,7 +22,7 @@ public class ResumeTestData {
         RESUME_3 = new Resume(UUID_3, "name3");
 
         RESUME_1 = new Resume("Кислин Григорий");
-        RESUME_1.setContacts(ContactType.PHONE, "+7(921) 855-0482");
+     /*   RESUME_1.setContacts(ContactType.PHONE, "+7(921) 855-0482");
         RESUME_1.setContacts(ContactType.SKYPE, "grigory.kislin");
         RESUME_1.setContacts(ContactType.MAIL, "gkislin@yandex.ru");
         RESUME_1.setContacts(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
@@ -100,5 +96,6 @@ public class ResumeTestData {
                                         "Инженер (программист Fortran, C)", null))),
                 new Organization("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/", Collections.singletonList(new OrganizationPeriod(1984, 9,
                         1987, 1, "Закончил с отличием", null))))));
+   */
     }
 }
