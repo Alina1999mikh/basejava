@@ -5,9 +5,9 @@ import com.urise.webapp.model.Resume;
 public class ResumeTestData {
     private Storage storage;
 
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
+    private static final String UUID_1 = "78c4af01-1a12-4728-985a-d456f4d74501";
+    private static final String UUID_2 = "78c4af01-1a12-4728-985a-d456f4d74512";
+    private static final String UUID_3 = "78c4af01-1a12-4728-985a-d456f4d74523";
 
     static final Resume RESUME_1;
     static final Resume RESUME_2;
