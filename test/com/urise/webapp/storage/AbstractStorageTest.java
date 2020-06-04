@@ -1,5 +1,6 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.Config;
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
@@ -9,12 +10,13 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
-    static final File STORAGE_DIR = new File("C:\\Users\\flenn\\basejava\\src\\com\\urise\\webapp\\storageResume");
+    static final File STORAGE_DIR = Config.get().getStorageDir();
 
     Storage storage;
 
@@ -27,7 +29,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() throws IOException, SQLException {
         storage.clear();
         storage.save(RESUME_1);
         storage.save(RESUME_2);
@@ -35,7 +37,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void clear() throws IOException {
+    public void clear() throws IOException, SQLException {
         storage.clear();
         assertSize(0);
     }

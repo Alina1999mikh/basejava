@@ -1,17 +1,13 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.model.*;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
+import com.urise.webapp.model.Resume;
 
 public class ResumeTestData {
     private Storage storage;
 
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
+    private static final String UUID_1 = "78c4af01-1a12-4728-985a-d456f4d74501";
+    private static final String UUID_2 = "78c4af01-1a12-4728-985a-d456f4d74512";
+    private static final String UUID_3 = "78c4af01-1a12-4728-985a-d456f4d74523";
 
     static final Resume RESUME_1;
     static final Resume RESUME_2;
@@ -26,7 +22,7 @@ public class ResumeTestData {
         RESUME_3 = new Resume(UUID_3, "name3");
 
         RESUME_1 = new Resume("Кислин Григорий");
-        RESUME_1.setContacts(ContactType.PHONE, "+7(921) 855-0482");
+     /*   RESUME_1.setContacts(ContactType.PHONE, "+7(921) 855-0482");
         RESUME_1.setContacts(ContactType.SKYPE, "grigory.kislin");
         RESUME_1.setContacts(ContactType.MAIL, "gkislin@yandex.ru");
         RESUME_1.setContacts(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
@@ -100,5 +96,6 @@ public class ResumeTestData {
                                         "Инженер (программист Fortran, C)", null))),
                 new Organization("Заочная физико-техническая школа при МФТИ", "http://www.school.mipt.ru/", Collections.singletonList(new OrganizationPeriod(1984, 9,
                         1987, 1, "Закончил с отличием", null))))));
+   */
     }
 }
