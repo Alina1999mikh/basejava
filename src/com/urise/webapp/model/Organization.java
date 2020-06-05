@@ -14,6 +14,7 @@ public class Organization implements Serializable {
     private Link homePage;
     private List<OrganizationPeriod> organizationPeriod;
 
+
     public Organization(String name, String url, List<OrganizationPeriod> organizationPeriod) {
         this.homePage = new Link(name, url);
         this.organizationPeriod = organizationPeriod;
